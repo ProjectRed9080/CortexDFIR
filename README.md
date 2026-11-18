@@ -181,7 +181,7 @@ Crea un archivo `.env` en la raíz basado en `.env.example`:
 
 ## 📸 Capturas de pantalla
 
-A continuación se muestra una vista previa de la plataforma. Reemplaza los archivos en `assets/img/` con tus propias capturas.
+A continuación se muestra una vista previa de la plataforma.
 
 ### Dashboard principal
 ![Dashboard de CortexDFIR](assets/img/dashboard.png)
@@ -198,7 +198,6 @@ A continuación se muestra una vista previa de la plataforma. Reemplaza los arch
 ### Asistente forense IA
 ![Chat interactivo sobre los registros](assets/img/chat-forense.png)
 
-> **Tip:** Todas las capturas se toman desde la interfaz en modo oscuro de la aplicación para mantener coherencia visual.
 
 ---
 
@@ -324,7 +323,6 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE)
 
 **Autor:** Elias Gordillo
 📧 elias.gordillo@utp.ac.pa  
-🔗 https://github.com/ProjectRed9080
 💼 https://www.linkedin.com/in/elias-gordillo/
 
 ---
