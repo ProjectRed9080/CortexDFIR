@@ -21,6 +21,7 @@
 - [⚡ Instalación y ejecución local](#-instalación-y-ejecución-local)
 - [⚙️ Variables de entorno](#-variables-de-entorno)
 - [💡 Uso de la plataforma](#-uso-de-la-plataforma)
+- [📸 Capturas de pantalla](#-capturas-de-pantalla)
 - [🌐 API REST](#-api-rest)
 - [☁️ Despliegue](#-despliegue)
 - [📁 Estructura del proyecto](#-estructura-del-proyecto)
@@ -175,6 +176,29 @@ Crea un archivo `.env` en la raíz basado en `.env.example`:
 5. **Generar Informe:** Haz clic en "Generar Informe Técnico" para obtener el dictamen pericial (con IA si está configurada, o con motor local).
 6. **Asistente Forense:** Plantea preguntas sobre los registros en el chat y recibe respuestas con citas de filas de evidencia.
 7. **Exportar PDF:** Descarga el informe listo para entregar.
+
+---
+
+## 📸 Capturas de pantalla
+
+A continuación se muestra una vista previa de la plataforma. Reemplaza los archivos en `assets/img/` con tus propias capturas.
+
+### Dashboard principal
+![Dashboard de CortexDFIR](assets/img/dashboard.png)
+
+### Hallazgos y amenazas detectadas
+![Hallazgos y clasificación MITRE](assets/img/hallazgos.png)
+
+### Línea de tiempo del incidente
+![Línea de tiempo](assets/img/timeline.png)
+
+### Informe pericial generado
+![Dictamen técnico y ejecutivo](assets/img/informe.png)
+
+### Asistente forense IA
+![Chat interactivo sobre los registros](assets/img/chat-forense.png)
+
+> **Tip:** Todas las capturas se toman desde la interfaz en modo oscuro de la aplicación para mantener coherencia visual.
 
 ---
 
