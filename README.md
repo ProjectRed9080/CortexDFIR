@@ -298,10 +298,10 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE)
 
 ## 📬 Contacto
 
-**Autor:** Elias  
-📧 [Tu correo electrónico]  
-🔗 [Tu perfil de GitHub](https://github.com/TU-USUARIO)  
-💼 [Tu LinkedIn o portafolio]
+**Autor:** Elias Gordillo
+📧 elias.gordillo@utp.ac.pa  
+🔗 https://github.com/ProjectRed9080
+💼 https://www.linkedin.com/in/elias-gordillo/
 
 ---
 
