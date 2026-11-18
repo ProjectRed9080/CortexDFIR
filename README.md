@@ -300,7 +300,7 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE)
 
 **Autor:** Elias  
 📧 elias.gordillo@utp.ac.pa  
-🔗 [Tu perfil de GitHub](https://github.com/TU-USUARIO)  
+🔗 https://github.com/ProjectRed9080
 💼 https://www.linkedin.com/in/elias-gordillo/
 
 ---
