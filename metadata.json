@@ -1,0 +1,8 @@
+{
+  "name": "CortexDFIR Agent - Plataforma de Inteligencia Forense para Informáticos",
+  "description": "Agente tecnológico de ciberseguridad e investigación forense (DFIR) para informáticos, sysadmins y analistas SecOps. Detección de amenazas en logs de Excel y emisión de dictamen pericial con IA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
