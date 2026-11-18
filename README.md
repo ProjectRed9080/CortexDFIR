@@ -299,9 +299,9 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE)
 ## 📬 Contacto
 
 **Autor:** Elias  
-📧 [Tu correo electrónico]  
+📧 elias.gordillo@utp.ac.pa  
 🔗 [Tu perfil de GitHub](https://github.com/TU-USUARIO)  
-💼 [Tu LinkedIn o portafolio]
+💼 https://www.linkedin.com/in/elias-gordillo/
 
 ---
 
